@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-
 import SharedLayout from "components/SharedLayout";
 import PrivateRoute from 'components/PrivateRoute'
 import PublicRoute from "components/PublicRoute";
+import Loader from "components/Loader";
 
 import Home from "pages/Home";
 import Contacts from 'pages/Contacts'
@@ -26,8 +26,7 @@ const App = () => {
   }, [dispatch])
 
   return <>
-  { isRefreshing &&
-    <Routes>
+    {isRefreshing ? <Loader width={50}/> : <Routes>
       <Route path="/" element={<SharedLayout />}>
         <Route index element={
           <PublicRoute>
@@ -45,14 +44,13 @@ const App = () => {
           </PublicRoute>}
         />
         <Route path='contacts' element={
-          <PrivateRoute>
+          <PrivateRoute path='/logIn'>
             <Contacts />
           </PrivateRoute>} 
         />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />}/>
-    </Routes>
-  }
+    </Routes>}
   </>
 }
 export default App

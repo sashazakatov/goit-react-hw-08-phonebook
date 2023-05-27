@@ -1,8 +1,12 @@
 import LoginForm from "components/LoginForm"
+import { Link } from './Login.styled'
 
 const Login = () => {
     return(
-        <LoginForm/>
+        <div>
+            <LoginForm/>
+            <p>Not registered? <Link to='/register'>Registration</Link></p>
+        </div>
     )
 }
 export default Login;
