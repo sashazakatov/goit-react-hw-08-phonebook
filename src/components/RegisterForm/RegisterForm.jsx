@@ -1,6 +1,8 @@
 import { useDispatch } from "react-redux";
 import { register } from "store/auth/opetations";
 
+import { Form, Button, Lable, Input } from './RegisterForm.styled'
+
 const RegisterForm = () => {
 
     const dispatch = useDispatch();
@@ -19,30 +21,30 @@ const RegisterForm = () => {
     }
 
     return(
-        <form onSubmit={handelSubmit}>
-            <label>
-                name
-                <input 
+        <Form onSubmit={handelSubmit}>
+            <Lable>
+                Name
+                <Input 
                     type="text"
                     name="name" 
                 />
-            </label>
-            <label>
-                email
-                <input 
+            </Lable>
+            <Lable>
+                Email
+                <Input 
                     type="email"
                     name="email" 
                 />
-            </label>
-            <label>
-                password
-                <input 
+            </Lable>
+            <Lable>
+                Password
+                <Input 
                     type="password"
                     name="password"
                 />
-            </label>
-            <button type="submit">Click</button>
-        </form>
+            </Lable>
+            <Button type="submit">Register</Button>
+        </Form>
     )
 }
 export default RegisterForm;

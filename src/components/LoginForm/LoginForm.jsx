@@ -1,6 +1,8 @@
 import { useDispatch } from "react-redux";
 import { logIn } from "store/auth/opetations";
 
+import { Form, Button, Lable, Input } from './LoginForm.styled'
+
 const LoginForm = () => {
     const dispatch = useDispatch();
 
@@ -17,23 +19,23 @@ const LoginForm = () => {
     }
 
     return(
-        <form onSubmit={handelSubmit}>
-            <label>
-                email
-                <input
+        <Form onSubmit={handelSubmit}>
+            <Lable>
+                Email
+                <Input
                     type="email"
                     name="email"
                 />
-            </label>
-            <label>
-                password
-                <input
+            </Lable>
+            <Lable>
+                Password
+                <Input
                     type="password"
                     name="password"
                 />
-            </label>
-            <button type="submit">Click</button>
-        </form>
+            </Lable>
+            <Button type="submit">Login</Button>
+        </Form>
     )
 }
 

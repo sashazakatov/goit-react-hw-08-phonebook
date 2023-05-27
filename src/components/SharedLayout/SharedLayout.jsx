@@ -1,27 +1,28 @@
 import UserMenu from "components/UserMenu";
 
-import { NavLink } from "react-router-dom";
 import { selectIsLoggedIn } from 'store/auth/selectors'
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
+
+import { Header, Navigation, Link } from './SharedLayout.styled'
 
 const SharedLayout = () => {
     const isLoggedIn = useSelector(selectIsLoggedIn);
     return(
         <>
-            <header>
-                <nav>
-                    <h1>Phonebook</h1>
-                    <NavLink to={'/'}>Home</NavLink>
-                    <NavLink to={'contacts'}>Contacts</NavLink>
-                </nav>
+            <Header>
+                <h1>Phonebook</h1>
+                <Navigation>
+                    <Link to={'/'}>Home</Link>
+                    <Link to={'contacts'}>Contacts</Link>
+                </Navigation>
                 { isLoggedIn ? <UserMenu /> : (
-                    <nav>
-                        <NavLink to={'register'}>Register</NavLink>
-                        <NavLink to={'logIn'}>LogIn</NavLink>
-                    </nav>
+                    <Navigation>
+                        <Link to={'register'}>Register</Link>
+                        <Link to={'logIn'}>LogIn</Link>
+                    </Navigation>
                 )}
-            </header>
+            </Header>
             <main>
                 <Outlet />
             </main>
