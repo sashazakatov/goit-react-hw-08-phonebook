@@ -1,10 +1,11 @@
 import css from './ContactList.module.css'
 import { useSelector, useDispatch } from "react-redux";
-import { selectFiltedItems, selectIsDeleting } from 'store/selectors';
-import { fetchContacts } from "store/operations";
 import { useEffect, useState } from 'react';
 
-import { deleteContact } from 'store/operations'; 
+import { fetchContacts, deleteContact } from 'store/contact/operations'
+import { selectFiltedItems } from 'store/selectors';
+import { selectIsDeleting } from 'store/contact/selectors';
+
 
 import Loader from 'components/Loader';
 
@@ -22,9 +23,9 @@ const ContactList = () => {;
         <ul className={css.list}>
         {
             filtredItems
-            .map(({id, name, phone}) => 
+            .map(({id, name, number}) =>  
             <li className={css.item} key={id}>
-                <p>{name}: {phone}</p>
+                <p>{name}: {number}</p>
                 <button 
                     className={css.button}
                     type="button" 
@@ -45,5 +46,4 @@ const ContactList = () => {;
         </ul>
     )
 }
-
 export default ContactList;
