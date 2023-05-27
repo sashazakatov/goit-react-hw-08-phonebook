@@ -1,31 +1,58 @@
-import ContactForm from "components/ContactForm";
-import Filter from "components/Filter";
-import Loader from "components/Loader";
-import ContactList from 'components/ContactList';
+import { useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
-import { useSelector } from "react-redux";
-import { selectError, selectIsLoading, selectItems } from 'store/selectors'
 
-import css from './App.module.css'
+import SharedLayout from "components/SharedLayout";
+import PrivateRoute from 'components/PrivateRoute'
+import PublicRoute from "components/PublicRoute";
+
+import Home from "pages/Home";
+import Contacts from 'pages/Contacts'
+
+import Register from "pages/Register";
+import Login from "pages/Login";
+
+import { selectIsRefreshing } from 'store/auth/selectors'
+import { refreshUser } from "store/auth/opetations";
 
 const App = () => {
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
-  const items = useSelector(selectItems);
+  const isRefreshing = useSelector(selectIsRefreshing);
 
+  const dispatch = useDispatch();
 
-  return (
-    <div>
-      <h1>Phonebook</h1>
-      <ContactForm/>
-      <h1>Contacts</h1>
-      <Filter/> 
-      <div className={css.selectors}>
-        { isLoading && <Loader width={100}/> }
-        {error && <p>{error}</p>}
-        {items && <ContactList/>}
-      </div>
-    </div>
-  );
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch])
+
+  return <>
+  { isRefreshing &&
+    <Routes>
+      <Route path="/" element={<SharedLayout />}>
+        <Route index element={
+          <PublicRoute>
+            <Home/>
+          </PublicRoute>} 
+        />
+        <Route path="register" element={
+          <PublicRoute restricted>
+            <Register/>
+          </PublicRoute>} 
+        />
+        <Route path="login" element={
+          <PublicRoute restricted>
+            <Login/>
+          </PublicRoute>}
+        />
+        <Route path='contacts' element={
+          <PrivateRoute>
+            <Contacts />
+          </PrivateRoute>} 
+        />
+      </Route>
+      <Route path="*" element={<Navigate to="/" replace />}/>
+    </Routes>
+  }
+  </>
 }
 export default App
