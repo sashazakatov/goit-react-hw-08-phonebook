@@ -9,6 +9,8 @@ const initialState = {
     token: null,
     isLoggedIn: false,
     isRefreshing: false,
+    isLoading: false,
+    error: null,
 }
 
 const authSlice = createSlice({
@@ -16,15 +18,29 @@ const authSlice = createSlice({
     initialState,
     extraReducers: (bilder) => {
         bilder
+            .addCase(register.pending, (state, actions) => {
+                state.isLoading = true;
+            })
             .addCase(register.fulfilled, (state, actions) => {
                 state.user = actions.payload.user;
                 state.token = actions.payload.token;
                 state.isLoggedIn = true;
+                state.isLoading = false;
+            })
+            .addCase(register.rejected, (state, actions) => {
+                state.isLoading = false;
+            })
+            .addCase(logIn.pending, (state) => {
+                state.isLoading = true;
             })
             .addCase(logIn.fulfilled, (state, actions) => {
                 state.user = actions.payload.user;
                 state.isLoggedIn = true;
                 state.token = actions.payload.token;
+                state.isLoading = false;
+            })
+            .addCase(logIn.rejected, (state, actions ) => {
+                state.isLoading = false;
             })
             .addCase(logOut.fulfilled, (state) => {
                 state.isLoggedIn = false;

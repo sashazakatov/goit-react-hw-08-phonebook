@@ -1,10 +1,17 @@
-import { useDispatch } from "react-redux";
+import Loader from 'components/Loader'
+
+import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "store/auth/opetations";
+
+import { selectIsLoading } from 'store/auth/selectors';
 
 import { Form, Button, Lable, Input } from './LoginForm.styled'
 
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
 const LoginForm = () => {
     const dispatch = useDispatch();
+    const isLoading = useSelector(selectIsLoading);
 
     const handelSubmit = (e) =>{
         e.preventDefault()
@@ -15,7 +22,10 @@ const LoginForm = () => {
         dispatch(logIn({
             email: email.value,
             password: password.value,
-        }));  
+        }))
+        .then((result) => {
+            Notify.failure(result.payload)
+        });  
     }
 
     return(
@@ -34,7 +44,10 @@ const LoginForm = () => {
                     name="password"
                 />
             </Lable>
-            <Button type="submit">Login</Button>
+            <Button type="submit">
+                Login
+                {isLoading && <Loader width={15}/>}
+            </Button>
         </Form>
     )
 }

@@ -1,11 +1,17 @@
-import { useDispatch } from "react-redux";
+import Loader from 'components/Loader'
+
+import { useDispatch, useSelector } from "react-redux";
 import { register } from "store/auth/opetations";
+
+import { selectIsLoading } from 'store/auth/selectors';
 
 import { Form, Button, Lable, Input } from './RegisterForm.styled'
 
-const RegisterForm = () => {
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
+const RegisterForm = () => {
     const dispatch = useDispatch();
+    const isLoading = useSelector(selectIsLoading);
 
     const handelSubmit = (e) =>{
         e.preventDefault()
@@ -17,7 +23,10 @@ const RegisterForm = () => {
             name: name.value,
             email: email.value,
             password: password.value,
-        }));  
+        }))
+        .then((result) => {
+            Notify.failure(result.payload)
+        });
     }
 
     return(
@@ -43,7 +52,10 @@ const RegisterForm = () => {
                     name="password"
                 />
             </Lable>
-            <Button type="submit">Register</Button>
+            <Button type="submit">
+                Register
+                {isLoading && <Loader width={15}/>}
+            </Button>
         </Form>
     )
 }

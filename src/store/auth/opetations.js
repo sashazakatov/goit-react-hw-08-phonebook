@@ -19,7 +19,12 @@ export const register = createAsyncThunk(
       setAuthHeader(res.data.token);
       return res.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      switch (error.code){
+        case "ERR_BAD_REQUEST":
+          return thunkAPI.rejectWithValue("All this user already exists");
+        default:
+          return thunkAPI.rejectWithValue("Error");
+      }
     }
   }
 );
@@ -29,11 +34,15 @@ export const logIn = createAsyncThunk(
   async (credentials, thunkAPI) => {
     try {
       const res = await axios.post('/users/login', credentials);
-      // After successful login, add the token to the HTTP header
       setAuthHeader(res.data.token);
       return res.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      switch (error.code){
+        case "ERR_BAD_REQUEST":
+          return thunkAPI.rejectWithValue("Looks like wrong username or password");
+        default:
+          return thunkAPI.rejectWithValue("Error");
+      }
     }
   }
 );
