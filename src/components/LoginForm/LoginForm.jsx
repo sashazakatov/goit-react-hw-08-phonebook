@@ -24,8 +24,15 @@ const LoginForm = () => {
             password: password.value,
         }))
         .then((result) => {
-            Notify.failure(result.payload)
-        });  
+            switch (result.payload){
+                case "ERR_BAD_REQUEST":
+                    Notify.failure("Looks like wrong username or password");
+                    break;
+                default:
+                    Notify.success("Goot!");
+                    break;
+            }
+        });
     }
 
     return(

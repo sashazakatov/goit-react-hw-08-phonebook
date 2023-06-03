@@ -19,12 +19,7 @@ export const register = createAsyncThunk(
       setAuthHeader(res.data.token);
       return res.data;
     } catch (error) {
-      switch (error.code){
-        case "ERR_BAD_REQUEST":
-          return thunkAPI.rejectWithValue("All this user already exists");
-        default:
-          return thunkAPI.rejectWithValue("Error");
-      }
+      return thunkAPI.rejectWithValue(error.code);
     }
   }
 );
@@ -37,12 +32,7 @@ export const logIn = createAsyncThunk(
       setAuthHeader(res.data.token);
       return res.data;
     } catch (error) {
-      switch (error.code){
-        case "ERR_BAD_REQUEST":
-          return thunkAPI.rejectWithValue("Looks like wrong username or password");
-        default:
-          return thunkAPI.rejectWithValue("Error");
-      }
+      return thunkAPI.rejectWithValue(error.code);
     }
   }
 );
@@ -52,7 +42,7 @@ export const logOut = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
     await axios.post('/users/logout');
     clearAuthHeader();
   } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
+    return thunkAPI.rejectWithValue(error.code);
   }
 });
 
